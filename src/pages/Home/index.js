@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, Image, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import Carousel from 'react-native-snap-carousel';
 
@@ -7,6 +7,7 @@ import api from '../../services/api'
 import key from '../../../key'
 
 import ListComponents from '../../components/ListComponents/'
+import Footer from '../../components/Footer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
@@ -14,6 +15,9 @@ const Home = () => {
     const carouselRef = useRef(null)
     const [slide, setSlide] = useState({})
     const [listAll, setListAll] = useState([])
+    const [listDiscover, setListDiscover] = useState([])
+    const [listTvTranding, setListTvTranding] = useState([])
+    const [dataSlide, setDataSlide] = useState([])
 
     useEffect(() => {
 
@@ -31,55 +35,126 @@ const Home = () => {
 
     useEffect(() => {
         api.get(`/trending/all/week${key}`).then(responde => {
+            const items = responde.data.results
 
-            setListAll(responde.data.results)
+            setListAll({
+                items,
+                title: "Destaques"
+            })
 
         })
 
     }, [])
 
-    const renderItems = ({ items, index }) => {
-        console.log(items)
-        return (
-            <ListComponents listAll={items} />
-        )
-    }
+    useEffect(() => {
+        api.get(`/discover/movie${key}`).then(responde => {
+            const items = responde.data.results
+
+            setListDiscover({
+                items,
+                media_type: 'movie',
+                title: "Novidades"
+            })
+        })
+
+    }, [])
+
+    useEffect(() => {
+        api.get(`/tv/popular${key}`).then(responde => {
+            const items = responde.data.results
+
+            setListTvTranding({
+                items,
+                media_type: 'tv',
+                title: "Séries em Destaques"
+            })
+        })
+
+    }, [])
+
+    useEffect(() => {
+        let date = (slide.release_date ? slide.release_date : slide.first_air_date)
+        let newDate = []
+
+        if (date) {
+            newDate = date.split('-')
+        }
+
+        setDataSlide(newDate)
+    }, [])
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-            <View style={styles.container}>
+        <ScrollView style={{ flex: 1 }} >
+            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+                <View style={styles.container}>
 
-                <View>
-                    <Image source={{ uri: `https://image.tmdb.org/t/p/original${slide.backdrop_path}` }} style={styles.imageBack} />
+                    <View>
+                        <Image source={{ uri: `https://image.tmdb.org/t/p/original${slide.backdrop_path}` }} style={styles.imageBack} />
 
-                    <LinearGradient
-                        // Background Linear Gradient
-                        colors={['transparent', '#141414']}
-                        style={styles.backgroundTransparent}
-                    />
-                    <View style={styles.moreInfo}>
-                        <Text style={styles.title} >{slide.title}</Text>
-
-                        <TouchableOpacity style={styles.moreInfoButtom}>
-                            <Text style={styles.moreInfoText}>Mais Info</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-                <View>
-                    {listAll.length > 0 &&
-                        <Carousel
-                            ref={carouselRef}
-                            data={listAll}
-                            renderItem={renderItems}
-                            sliderWidth={screenWidth}
-                            itemWidth={200}
+                        <LinearGradient
+                            // Background Linear Gradient
+                            colors={['transparent', '#141414']}
+                            style={styles.backgroundTransparent}
                         />
-                    }
-                </View>
+                        <View style={styles.moreInfo}>
+                            <Text style={styles.title} >{slide.title}</Text>
 
-            </View>
-        </KeyboardAvoidingView>
+                            {dataSlide &&
+                                <Text style={styles.dataYear}>{dataSlide[0]}</Text>
+                            }
+
+                            <TouchableOpacity style={styles.moreInfoButtom}>
+                                <Text style={styles.moreInfoText}>Mais Info</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+
+                    <View>
+                        {listAll &&
+                            <>
+                                <Text style={styles.listTitle}>{listAll.title}</Text>
+                                <Carousel
+                                    ref={carouselRef}
+                                    data={listAll.items}
+                                    renderItem={(items, index) => <ListComponents list={items} />}
+                                    sliderWidth={screenWidth}
+                                    itemWidth={200}
+                                />
+                            </>
+                        }
+
+                        {listDiscover &&
+                            <>
+                                <Text style={styles.listTitle}>{listDiscover.title}</Text>
+                                <Carousel
+                                    ref={carouselRef}
+                                    data={listDiscover.items}
+                                    renderItem={(items, index) => <ListComponents list={items} />}
+                                    sliderWidth={screenWidth}
+                                    itemWidth={200}
+                                />
+                            </>
+                        }
+
+                        {listTvTranding &&
+                            <>
+                                <Text style={styles.listTitle}>{listTvTranding.title}</Text>
+                                <Carousel
+                                    ref={carouselRef}
+                                    data={listTvTranding.items}
+                                    renderItem={(items, index) => <ListComponents list={items} />}
+                                    sliderWidth={screenWidth}
+                                    itemWidth={200}
+                                />
+                            </>
+                        }
+                    </View>
+
+                    <Footer />
+
+                </View>
+            </KeyboardAvoidingView>
+        </ScrollView>
     )
 }
 
@@ -111,9 +186,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         bottom: 60
     },
+    dataYear: {
+        fontSize: 20,
+        color: '#fff',
+        alignSelf: 'center',
+        top: 10,
+    },
     moreInfoButtom: {
         alignSelf: 'center',
         padding: 10,
+        marginTop: 10,
         backgroundColor: '#eee',
         borderRadius: 3,
         elevation: 3
@@ -123,5 +205,13 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: "#222",
         elevation: 2
+    },
+    listTitle: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        alignSelf: 'flex-start',
+        padding: 10,
+        color: '#fff',
+        marginTop: 50,
     }
 })

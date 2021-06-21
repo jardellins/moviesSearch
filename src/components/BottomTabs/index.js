@@ -4,6 +4,8 @@ import { Ionicons, MaterialIcons } from '@expo/vector-icons'
 
 import Home from '../../pages/Home';
 import Search from '../../pages/Search'
+import Movie from '../../pages/Movie';
+import Tv from '../../pages/Tv';
 
 const Tab = createBottomTabNavigator()
 
@@ -24,12 +26,12 @@ const BottomTabs = () => {
             tabBarIcon: ({color, size}) => <Ionicons name='search' color={color} size={size} />,
         }} />
 
-        <Tab.Screen name='Movie' component={Search} options={{
+        <Tab.Screen name='Movie' component={Movie} options={{
             tabBarLabel: 'Filmes',
             tabBarIcon: ({color, size}) => <MaterialIcons name='movie' color={color} size={size} />,
         }} />
 
-        <Tab.Screen name='Tv' component={Search} options={{
+        <Tab.Screen name='Tv' component={Tv} options={{
             tabBarLabel: 'Séries',
             tabBarIcon: ({color, size}) => <Ionicons name='tv-outline' color={color} size={size} />,
         }} />

@@ -105,12 +105,11 @@ const styles = StyleSheet.create({
     },
     containerGenre: {
         flex: 1,
-        margin: 20,
+        margin: 10,
         marginTop: 100,
         flexDirection: 'row',
         flexWrap: 'wrap',
-        alignSelf: 'center',
-        // width: screenWidth,
+        marginBottom: 50,
     },
     listGenre: {
         backgroundColor: '#DEDEDE',

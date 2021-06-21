@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { View, Text, StyleSheet, Image, ScrollView, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient';
 import Carousel from 'react-native-snap-carousel';
 
 import api from '../../services/api'
 import key from '../../../key'
 
-import ListComponents from '../../components/ListComponents/'
+import ListItemsCarousel from '../../components/ListItemsCarousel'
+import Slide from '../../components/Slide'
 import Footer from '../../components/Footer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
@@ -88,26 +88,7 @@ const Home = () => {
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <View style={styles.container}>
 
-                    <View>
-                        <Image source={{ uri: `https://image.tmdb.org/t/p/original${slide.backdrop_path}` }} style={styles.imageBack} />
-
-                        <LinearGradient
-                            // Background Linear Gradient
-                            colors={['transparent', '#141414']}
-                            style={styles.backgroundTransparent}
-                        />
-                        <View style={styles.moreInfo}>
-                            <Text style={styles.title} >{slide.title}</Text>
-
-                            {dataSlide &&
-                                <Text style={styles.dataYear}>{dataSlide[0]}</Text>
-                            }
-
-                            <TouchableOpacity style={styles.moreInfoButtom}>
-                                <Text style={styles.moreInfoText}>Mais Info</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
+                    <Slide slide={slide} />
 
                     <View>
                         {listAll &&
@@ -116,7 +97,7 @@ const Home = () => {
                                 <Carousel
                                     ref={carouselRef}
                                     data={listAll.items}
-                                    renderItem={(items, index) => <ListComponents list={items} />}
+                                    renderItem={(items, index) => <ListItemsCarousel list={items} />}
                                     sliderWidth={screenWidth}
                                     itemWidth={200}
                                 />
@@ -129,7 +110,7 @@ const Home = () => {
                                 <Carousel
                                     ref={carouselRef}
                                     data={listDiscover.items}
-                                    renderItem={(items, index) => <ListComponents list={items} />}
+                                    renderItem={(items, index) => <ListItemsCarousel list={items} />}
                                     sliderWidth={screenWidth}
                                     itemWidth={200}
                                 />
@@ -142,7 +123,7 @@ const Home = () => {
                                 <Carousel
                                     ref={carouselRef}
                                     data={listTvTranding.items}
-                                    renderItem={(items, index) => <ListComponents list={items} />}
+                                    renderItem={(items, index) => <ListItemsCarousel list={items} />}
                                     sliderWidth={screenWidth}
                                     itemWidth={200}
                                 />

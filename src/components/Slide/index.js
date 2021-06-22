@@ -16,7 +16,7 @@ const Slide = ({slide}) => {
                     style={styles.backgroundTransparent}
                 />
                 <View style={styles.moreInfo}>
-                    <Text style={styles.title} >{slide.title}</Text>
+                    <Text style={styles.title} >{slide.title ? slide.title : slide.name}</Text>
 
                 </View>
             </View>

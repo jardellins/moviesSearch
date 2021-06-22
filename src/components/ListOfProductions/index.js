@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
+import ImgDefault from '../../../assets/img.png'
+
 const ListOfProductions = ({ listSlide }) => {
-   
+
     return (
         <View style={styles.containerProdiction}>
 
@@ -24,7 +26,12 @@ const ListOfProductions = ({ listSlide }) => {
                                 <Text style={styles.data} >{newDate[0]}</Text>
                             }
 
-                            <Image style={styles.image} source={{ uri: `https://image.tmdb.org/t/p/w300${list.poster_path}` }} />
+                            {list.poster_path ?
+                                <Image style={styles.image} source={{ uri: `https://image.tmdb.org/t/p/w300${list.poster_path}` }} />
+                                :
+                                <Image style={styles.image} source={ImgDefault} />
+                            }
+
                         </View>
 
                     </TouchableOpacity>
@@ -51,13 +58,13 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     textProduction: {
-        fontSize: 15,
+        fontSize: 12,
         fontWeight: 'bold',
         color: '#fff',
         textAlign: 'center',
     },
     data: {
-        fontSize: 12,
+        fontSize: 8,
         fontWeight: 'bold',
         color: "#fff",
         alignSelf: 'center',
@@ -67,5 +74,8 @@ const styles = StyleSheet.create({
         height: 150,
         marginTop: 10,
         alignSelf: 'center',
-    }
+        borderRadius: 8,
+        borderColor: '#666',
+        borderWidth: 1,
+    },
 })

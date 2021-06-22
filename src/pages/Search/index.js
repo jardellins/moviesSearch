@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, Image, ScrollView, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, StyleSheet, ScrollView, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons'
 
@@ -13,7 +13,7 @@ const Background = ({ children }) => {
     return (
         <LinearGradient
             // Background Linear Gradient
-            colors={['#D6D6D6', '#141414']}
+            colors={['#ff4400', '#141414']}
             style={styles.backgroundTransparent}
         >
             {children}
@@ -21,8 +21,9 @@ const Background = ({ children }) => {
     )
 }
 
-const Search = () => {
+const Search = ({ navigation }) => {
     const [genreList, setGenreList] = useState([])
+    const [valueInput, setValueInput] = useState('')
 
     useEffect(() => {
         async function listGender() {
@@ -33,6 +34,12 @@ const Search = () => {
         }
         listGender()
     }, [])
+
+    const handleSearch = ({name, id, genreName}) => {
+        navigation.navigate('ListSearch', { name: name, id: id, genreName: genreName })
+
+        setValueInput('')
+    }
 
     return (
         <Background>
@@ -46,9 +53,13 @@ const Search = () => {
                             <TextInput
                                 style={styles.inputSearch}
                                 placeholder={'Digite o nome do filme ou série'}
+                                multiline={true}
+                                autoCorrect={false}
+                                value={valueInput}
+                                onChangeText={(text) => setValueInput(text)}
                             />
                             <TouchableOpacity>
-                                <Ionicons name='search' size={20} style={styles.iconSearch} />
+                                <Ionicons name='search' size={20} style={styles.iconSearch} onPress={() => handleSearch({name: valueInput})} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -56,10 +67,10 @@ const Search = () => {
                     <View style={styles.containerGenre}>
                         {genreList[0] && genreList.map((genre) => {
                             return (
-                                <TouchableOpacity style={styles.listGenre}>
-                                        <Text style={styles.textGenre}>
-                                            {genre.name}
-                                        </Text>
+                                <TouchableOpacity key={genre.id} style={styles.listGenre} onPress={() => handleSearch({id: genre.id,genreName: genre.name})}>
+                                    <Text style={styles.textGenre}>
+                                        {genre.name}
+                                    </Text>
                                 </TouchableOpacity>
                             )
                         })}
@@ -88,7 +99,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         padding: 5,
-        margin: 10,
+        margin: 15,
         alignItems: 'center',
         borderRadius: 10,
         elevation: 3,
@@ -101,7 +112,7 @@ const styles = StyleSheet.create({
     },
     iconSearch: {
         color: '#ff8732',
-        fontSize: 23,
+        fontSize: 30,
     },
     containerGenre: {
         flex: 1,

@@ -11,7 +11,7 @@ import Footer from '../../components/Footer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
-const Home = () => {
+const Home = ({navigation}) => {
     const carouselRef = useRef(null)
     const [slide, setSlide] = useState({})
     const [listAll, setListAll] = useState([])
@@ -97,7 +97,7 @@ const Home = () => {
                                 <Carousel
                                     ref={carouselRef}
                                     data={listAll.items}
-                                    renderItem={(items, index) => <ListItemsCarousel list={items} />}
+                                    renderItem={(items, index) => <ListItemsCarousel list={items} navigation={navigation} />}
                                     sliderWidth={screenWidth}
                                     itemWidth={200}
                                 />
@@ -110,7 +110,7 @@ const Home = () => {
                                 <Carousel
                                     ref={carouselRef}
                                     data={listDiscover.items}
-                                    renderItem={(items, index) => <ListItemsCarousel list={items} />}
+                                    renderItem={(items, index) => <ListItemsCarousel list={items} navigation={navigation} />}
                                     sliderWidth={screenWidth}
                                     itemWidth={200}
                                 />
@@ -123,7 +123,7 @@ const Home = () => {
                                 <Carousel
                                     ref={carouselRef}
                                     data={listTvTranding.items}
-                                    renderItem={(items, index) => <ListItemsCarousel list={items} />}
+                                    renderItem={(items, index) => <ListItemsCarousel list={items} navigation={navigation} />}
                                     sliderWidth={screenWidth}
                                     itemWidth={200}
                                 />

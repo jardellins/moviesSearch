@@ -8,7 +8,7 @@ import Slide from '../../components/Slide';
 import ListOfProductions from '../../components/ListOfProductions';
 import Footer from '../../components/Footer';
 
-const Movie = () => {
+const Movie = ({navigation}) => {
     const [slide, setSlide] = useState([])
     const [listOfMovies, setListOfMovies] = useState([])
     const [newList, setNewList] = useState([])
@@ -32,7 +32,7 @@ const Movie = () => {
             await api.get(`/discover/movie${key}`).then(responde => {
                 setListOfMovies(responde.data.results)
             })
-        } 
+        }
 
         getMovies()
     }, [])
@@ -43,18 +43,18 @@ const Movie = () => {
                 ...list,
                 media_type: 'movie'
             }))
-    
+
             setNewList(newData)
         }
-        
+
         addMedia()
 
     }, [listOfMovies])
 
     return (
-        <ScrollView style={{ flex: 1 }} >
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-                <View style={styles.container}>
+        <View style={styles.container}>
+            <ScrollView>
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
                     <Slide slide={slide} />
 
@@ -63,14 +63,14 @@ const Movie = () => {
                     </View>
 
                     {newList &&
-                        <ListOfProductions listSlide={newList} />
+                        <ListOfProductions listSlide={newList} navigation={navigation} />
                     }
 
                     <Footer />
 
-                </View>
-            </KeyboardAvoidingView>
-        </ScrollView>
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </View>
     )
 }
 

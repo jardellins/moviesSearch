@@ -48,7 +48,6 @@ const Search = ({ navigation }) => {
 
                     <View style={StyleSheet.containerSearch}>
 
-
                         <View style={styles.containerInput}>
                             <TextInput
                                 style={styles.inputSearch}
@@ -67,7 +66,7 @@ const Search = ({ navigation }) => {
                     <View style={styles.containerGenre}>
                         {genreList[0] && genreList.map((genre) => {
                             return (
-                                <TouchableOpacity key={genre.id} style={styles.listGenre} onPress={() => handleSearch({id: genre.id,genreName: genre.name})}>
+                                <TouchableOpacity key={genre.id} style={styles.listGenre} onPress={() => handleSearch({id: genre.id, genreName: genre.name})}>
                                     <Text style={styles.textGenre}>
                                         {genre.name}
                                     </Text>

@@ -11,8 +11,10 @@ import Footer from '../../components/Footer';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const ListSearch = ({ route, navigation }) => {
+
     const [searchList, setSearchList] = useState([])
     const [genreList, setGenreList] = useState([])
+    const [newList, setNewList] = useState([])
 
     const name = route.params.name
     const genreName = route.params.genreName
@@ -45,28 +47,42 @@ const ListSearch = ({ route, navigation }) => {
 
     }, [genreName])
 
+    useEffect(() => {
+        const addMedia = () => {
+            const newList = genreList && genreList.map(list => ({
+                ...list,
+                media_type: 'movie'
+            }))
+
+            setNewList(newList)
+        }
+
+        addMedia()
+
+    }, [genreList])
+
     return (
-        <ScrollView style={{ flex: 1 }} >
-            <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-                <View style={styles.container}>
+        <View style={styles.container}>
+            <ScrollView >
+                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
                     <MaterialIcons style={styles.arrow} name="arrow-back-ios" size={24} color="white" onPress={() => navigation.navigate('Search')} />
 
                     <Text style={styles.title} >{name ? `Pesquisa por ${name}` : `Filtro por ${genreName}`}</Text>
 
                     {searchList &&
-                        <ListOfProductions listSlide={searchList} />
+                        <ListOfProductions listSlide={searchList} navigation={navigation} />
                     }
 
-                    {genreList &&
-                        <ListOfProductions listSlide={genreList} />
+                    {newList &&
+                        <ListOfProductions listSlide={newList} navigation={navigation} />
                     }
 
                     <Footer />
 
-                </View>
-            </KeyboardAvoidingView>
-        </ScrollView>
+                </KeyboardAvoidingView>
+            </ScrollView>
+        </View>
     )
 }
 

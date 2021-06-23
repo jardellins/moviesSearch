@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 
 import ImgDefault from '../../../assets/img.png'
 
-const ListOfProductions = ({ listSlide }) => {
+const ListOfProductions = ({ listSlide, navigation }) => {
 
     return (
         <View style={styles.containerProdiction}>
@@ -15,9 +15,9 @@ const ListOfProductions = ({ listSlide }) => {
                 if (date) {
                     newDate = date.split('-')
                 }
-
+// 
                 return (
-                    <TouchableOpacity key={list.id} style={styles.listRow}>
+                    <TouchableOpacity key={list.id} style={styles.listRow} onPress={() => navigation.navigate('Info', {id: list.id, media: list.media_type})}>
 
                         <View>
                             <Text style={styles.textProduction}>{list.title ? list.title : list.name}</Text>

@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
+        justifyContent: 'flex-end',
     },
     textFooter: {
         fontSize: 15,

@@ -2,11 +2,13 @@ import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 const ListComponents = ({ list, navigation }) => {
-console.log(list)
+
+  const media = list.item.media_type || list.media_type
+  
   return (
     <>
       {list &&
-        <TouchableOpacity onPress={() => navigation.navigate('Info', {id: list.id, media: list.media_type})}>
+        <TouchableOpacity onPress={() => navigation.navigate('Info', {id: list.item.id, media})}>
           <View>
             <Image source={{ uri: `https://image.tmdb.org/t/p/w300${list.item.poster_path}` }} style={styles.imageList} />
             <Text style={styles.title}>{list.item.title ? list.item.title : list.item.name}</Text>

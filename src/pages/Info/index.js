@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, Dimensions } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient';
-import NumberFormat from 'react-number-format';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, StyleSheet, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
+import YoutubePlayer from "react-native-youtube-iframe"
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import api from '../../services/api'
 import key from '../../../key'
@@ -13,8 +14,11 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
 const Info = ({ route }) => {
     const [getInfo, setGetInfo] = useState({})
+    const [getTrailer, setGetTrailer] = useState([])
+    const [urlTrailer, setURLTrailer] = useState('')
     const [minutes, setMinutes] = useState(0)
     const [dateNew, setDateNew] = useState('')
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         const handleGetApi = async () => {
@@ -53,17 +57,32 @@ const Info = ({ route }) => {
             }
         }
 
+        const trailer = async () => {
+            await api.get(`https://api.themoviedb.org/3/movie/${getInfo.id}/videos${key}`).then(response => {
+                setGetTrailer(response.data.results)
+            })
+        }
+
         handleMinute()
         handleDate()
+        trailer()
     }, [getInfo])
 
-    console.log(getInfo)
+    useEffect(() => {
+        if (getTrailer.length) {
+            setURLTrailer(getTrailer[0].key)
+        }
+    }, [getTrailer])
+
 
     return (
         <View style={styles.container}>
             <ScrollView style={{ flex: 1 }}>
-                
+
                 <View>
+
+                    {/* <MaterialIcons style={styles.arrow} name="arrow-back-ios" size={24} color="white" /> */}
+
                     {getInfo.backdrop_path ?
                         <Image source={{ uri: `https://image.tmdb.org/t/p/original${getInfo.backdrop_path}` }} style={styles.imageBack} />
                         :
@@ -94,59 +113,87 @@ const Info = ({ route }) => {
                         <Text>{getInfo.overview}</Text>
                     </View>
 
-                    <View>
-                        {getInfo.origin_country &&
-                            <Text>
-                                {getInfo.origin_country.length > 1 ? 'Paises de origem: ' : 'País de origem: '}
-                                {getInfo.origin_country.map(country => (
-                                    country + ' '))
-                                }
-                            </Text>
-                        }
+                    <View style={styles.containerDetails}>
 
-                        {getInfo.production_countries &&
-                            <Text>
-                                {getInfo.production_countries &&  'Filmagens: '}
-                                {getInfo.production_countries.map(country => (
-                                    country.iso_3166_1 + ' '))
-                                }
-                            </Text>
-                        }
+                        <View style={styles.details}>
+                            {getInfo.origin_country &&
+                                <Text>
+                                    {getInfo.origin_country.length > 1 ? 'Paises de origem: ' : 'País de origem: '}
+                                    {getInfo.origin_country.map(country => (
+                                        country + ' '))
+                                    }
+                                </Text>
+                            }
 
-                        {/* {getInfo.budget > 0 &&
+                            {getInfo.production_countries &&
+                                <Text>
+                                    {getInfo.production_countries && 'Filmagens: '}
+                                    {getInfo.production_countries.map(country => (
+                                        country.iso_3166_1 + ' '))
+                                    }
+                                </Text>
+                            }
+
+                            {/* {getInfo.budget > 0 &&
                             <Text>Orçamento: 
-                                <NumberFormat value={getInfo.budget} displayType={'text'} thousandSeparator={true} prefix={' $'} />
+                            <NumberFormat value={getInfo.budget} displayType={'text'} thousandSeparator={true} prefix={' $'} />
                             </Text>
                         }
-
+                        
                         {getInfo.revenue > 0 &&
                             <Text>Arrecadação: 
-                                <NumberFormat value={getInfo.revenue} displayType={'text'} thousandSeparator={true} prefix={' $'} />
+                            <NumberFormat value={getInfo.revenue} displayType={'text'} thousandSeparator={true} prefix={' $'} />
                             </Text>
                         } */}
 
-                        {getInfo.number_of_seasons &&
-                            (getInfo.number_of_seasons === 1 ?
-                                <Text>{getInfo.number_of_seasons} Temporada</Text>
-                                :
-                                <Text>{getInfo.number_of_seasons} Temporadas</Text>
-                            )
-                        }
+                            {getInfo.number_of_seasons &&
+                                (getInfo.number_of_seasons === 1 ?
+                                    <Text>{getInfo.number_of_seasons} Temporada</Text>
+                                    :
+                                    <Text>{getInfo.number_of_seasons} Temporadas</Text>
+                                )
+                            }
 
-                        {getInfo.number_of_episodes > 1 &&
-                            <Text>{getInfo.number_of_episodes} episódios</Text>
-                        }
+                            {getInfo.number_of_episodes > 1 &&
+                                <Text>{getInfo.number_of_episodes} episódios</Text>
+                            }
 
 
-                        <Text>Duração: {minutes} min</Text>
+                            <Text>Duração: {minutes} min</Text>
+                        </View>
+
+                        <View>
+                            {urlTrailer !== '' &&
+                                <TouchableOpacity onPress={() => setShowModal(true)}>
+                                    <Text style={styles.trailer}>Tailer</Text>
+
+                                </TouchableOpacity>
+                            }
+
+                            {/* {getInfo.homepage &&
+
+                            } */}
+                        </View>
                     </View>
 
                 </View>
 
                 <Footer />
-
             </ScrollView>
+
+            {showModal &&
+                <View style={styles.modal}>
+                    <View style={{ marginTop: 60 }}>
+                        <YoutubePlayer
+                            height={300}
+                            videoId={urlTrailer}
+                        />
+                        <Ionicons onPress={() => setShowModal(false)} name="close-circle-outline" size={65} color="#ff4400" style={styles.closeButton} />
+                    </View>
+                </View>
+            }
         </View>
+
     )
 }
 
@@ -201,5 +248,38 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#0c1a60',
         marginBottom: 10,
+    },
+    containerDetails: {
+        margin: 20,
+    },
+    details: {
+        flexDirection: 'column',
+        alignSelf: 'flex-start',
+        marginLeft: -5,
+    },
+    trailer: {
+        margin: 15,
+        alignSelf: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        padding: 9,
+        borderColor: '#ff4400',
+        borderWidth: 3,
+        borderRadius: 4,
+        width: 100,
+        height: 50,
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
+    modal: {
+        position: 'absolute',
+        width: screenWidth,
+        height: '100%',
+        backgroundColor: 'rgba(0,0,0,.8)',
+        alignSelf: 'center',
+        justifyContent: 'center'
+    },
+    closeButton: {
+        alignSelf: 'center',
     }
 })

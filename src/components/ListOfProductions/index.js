@@ -15,7 +15,7 @@ const ListOfProductions = ({ listSlide, navigation }) => {
                 if (date) {
                     newDate = date.split('-')
                 }
-// 
+                
                 return (
                     <TouchableOpacity key={list.id} style={styles.listRow} onPress={() => navigation.navigate('Info', {id: list.id, media: list.media_type})}>
 

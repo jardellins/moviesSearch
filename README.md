@@ -1,4 +1,4 @@
-![Capturar_select-area_20210615222113](https://user-images.githubusercontent.com/44972197/122143560-14541300-ce28-11eb-84c7-c91935669082.png)
+![Screenshot_2021-06-24-19-37-06-184_host exp exponent](https://user-images.githubusercontent.com/44972197/123342321-e9ec0f00-d525-11eb-9234-384c376a2d1a.jpg)
 
 <h1 align="center">
     Movies search
@@ -27,7 +27,7 @@ O projeto tem como objetivo apresentar ao usuário as novidades entre filmes e s
 Esse projeto foi desenvolvido com a seguinte Stack
 
 - [React-Native](https://reactnative.dev/)
-- [Expo] (https://expo.io/)
+- [Expo](https://expo.io/)
 - [react-native-youtube-iframe](https://www.npmjs.com/package/react-native-youtube-iframe)
 - [JavaScript](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)
 
@@ -37,16 +37,24 @@ Esse projeto foi desenvolvido com a seguinte Stack
 ## Overview da Aplicação
 
 Tela inicial com as novidades de filmes e séries
-
+![Screenshot_2021-06-24-19-37-06-184_host exp exponent](https://user-images.githubusercontent.com/44972197/123342321-e9ec0f00-d525-11eb-9234-384c376a2d1a.jpg)
 
 <p align="center" >
-
-
+Tela de Pesquisa
+![Screenshot_2021-06-24-19-37-10-408_host exp exponent](https://user-images.githubusercontent.com/44972197/123342377-08520a80-d526-11eb-8c9c-93cc9ba18a9b.jpg)
 
 <p>
 
+Tela de Filmes
+![Screenshot_2021-06-24-19-37-18-574_host exp exponent](https://user-images.githubusercontent.com/44972197/123342402-1c960780-d526-11eb-8f74-01e6e5c65dea.jpg)
 
-
+Telas de Inforação das produções
+    
+![Screenshot_2021-06-24-19-37-58-036_host exp exponent](https://user-images.githubusercontent.com/44972197/123342488-3cc5c680-d526-11eb-9688-506cd71db83f.jpg)
+    
+![Screenshot_2021-06-24-19-37-36-394_host exp exponent](https://user-images.githubusercontent.com/44972197/123342492-3f282080-d526-11eb-8880-10f5f43bae55.jpg)
+    
+![Screenshot_2021-06-24-19-38-13-065_host exp exponent](https://user-images.githubusercontent.com/44972197/123342532-4e0ed300-d526-11eb-98cc-7f6159e9adf0.jpg)
 <br/>
 <a id="iniciando"></a>
 

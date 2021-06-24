@@ -1,5 +1,3 @@
-![Screenshot_2021-06-24-19-37-06-184_host exp exponent](https://user-images.githubusercontent.com/44972197/123342321-e9ec0f00-d525-11eb-9234-384c376a2d1a.jpg)
-
 <h1 align="center">
     Movies search
 </h1>
@@ -36,16 +34,21 @@ Esse projeto foi desenvolvido com a seguinte Stack
 
 ## Overview da Aplicação
 
+<p align="center" >
+    
 Tela inicial com as novidades de filmes e séries
+
 ![Screenshot_2021-06-24-19-37-06-184_host exp exponent](https://user-images.githubusercontent.com/44972197/123342321-e9ec0f00-d525-11eb-9234-384c376a2d1a.jpg)
 
-<p align="center" >
+
 Tela de Pesquisa
+    
 ![Screenshot_2021-06-24-19-37-10-408_host exp exponent](https://user-images.githubusercontent.com/44972197/123342377-08520a80-d526-11eb-8c9c-93cc9ba18a9b.jpg)
 
-<p>
+
 
 Tela de Filmes
+    
 ![Screenshot_2021-06-24-19-37-18-574_host exp exponent](https://user-images.githubusercontent.com/44972197/123342402-1c960780-d526-11eb-8f74-01e6e5c65dea.jpg)
 
 Telas de Inforação das produções
@@ -55,6 +58,9 @@ Telas de Inforação das produções
 ![Screenshot_2021-06-24-19-37-36-394_host exp exponent](https://user-images.githubusercontent.com/44972197/123342492-3f282080-d526-11eb-8880-10f5f43bae55.jpg)
     
 ![Screenshot_2021-06-24-19-38-13-065_host exp exponent](https://user-images.githubusercontent.com/44972197/123342532-4e0ed300-d526-11eb-98cc-7f6159e9adf0.jpg)
+    
+<p>
+    
 <br/>
 <a id="iniciando"></a>
 
@@ -66,7 +72,7 @@ Para utilizar os dados da API do [TMDB](https://www.themoviedb.org/) será neces
 
 ```sh
 
-git clone https://github.com/jardellins/finder-movies.git
+https://github.com/jardellins/moviesSearch.git
 
 ```
 
@@ -76,14 +82,14 @@ Entrar no diretório da plaicação
 
 ```sh
 
-cd finder-movies
+cd moviesSearch
 
 ```
 
-E em seguida rodar os comandos
+E em seguida rodar os comandos para utilizar com o Expo
 
 ```sh
 yarn install
 
-yarn start
+expo start
 ```

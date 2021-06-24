@@ -17,7 +17,7 @@ const ListOfProductions = ({ listSlide, navigation }) => {
                 }
                 
                 return (
-                    <TouchableOpacity key={list.id} style={styles.listRow} onPress={() => navigation.navigate('Info', {id: list.id, media: list.media_type})}>
+                    <TouchableOpacity key={list.id} style={styles.listRow} onPress={() => navigation.navigate('Info', {id: list.id, media: list.media_type, navigation})}>
 
                         <View>
                             <Text style={styles.textProduction}>{list.title ? list.title : list.name}</Text>

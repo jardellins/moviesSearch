@@ -63,12 +63,14 @@ const ListSearch = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
+            <MaterialIcons style={styles.arrow} name="arrow-back-ios" size={20} color="white" onPress={() => navigation.goBack()} />
+
             <ScrollView >
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
-                    <MaterialIcons style={styles.arrow} name="arrow-back-ios" size={24} color="white" onPress={() => navigation.navigate('Search')} />
-
-                    <Text style={styles.title} >{name ? `Pesquisa por ${name}` : `Filtro por ${genreName}`}</Text>
+                    <View style={{width: 250, height: 100, justifyContent: 'flex-end', alignSelf: 'center'}}>
+                        <Text style={styles.title} >{name ? `Pesquisa por "${name}"` : `Filtro por "${genreName}"`}</Text>
+                    </View>
 
                     {searchList &&
                         <ListOfProductions listSlide={searchList} navigation={navigation} />
@@ -97,15 +99,18 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontWeight: 'bold',
         color: '#999',
-        marginTop: 30,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        textAlign: 'center',
+        width: '80%',
     },
     arrow: {
-        marginTop: 50,
-        marginLeft: 25,
-        alignItems: 'center',
-        justifyContent: 'center',
-        color: '#999',
-        width: screenWidth,
-    }
+        padding: 10,
+        backgroundColor: '#ff8732',
+        width: '15%',
+        borderRadius: 30,
+        position: 'absolute',
+        zIndex: 5,
+        marginTop: 40,
+        marginLeft: 10,
+    },
 })

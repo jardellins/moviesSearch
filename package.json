@@ -26,7 +26,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-web": "~0.13.12",
     "react-native-webview": "11.2.3",
-    "react-native-youtube-iframe": "^2.1.0"
+    "react-native-youtube-iframe": "^2.1.0",
+    "react-number-format": "^4.6.3"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0"

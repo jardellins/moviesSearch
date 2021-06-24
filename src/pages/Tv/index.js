@@ -20,7 +20,7 @@ const Movie = ({navigation}) => {
             const redonNumber = Math.floor(Math.random() * (list.data.results.length - 1))
             const choose = list.data.results[redonNumber]
 
-            setSlide({ ...choose, media_type: 'movie' })
+            setSlide({ ...choose, media_type: 'tv' })
         }
 
         response()
@@ -56,7 +56,7 @@ const Movie = ({navigation}) => {
             <ScrollView style={{ flex: 1 }} >
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
-                    <Slide slide={slide} />
+                    <Slide slide={slide} navigation={navigation}/>
 
                     <View>
                         <Text style={styles.textTitle}>Séries</Text>
@@ -73,6 +73,7 @@ const Movie = ({navigation}) => {
         </View>
     )
 }
+
 
 export default Movie;
 

@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native'
-import Carousel from 'react-native-snap-carousel';
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native'
 
 import api from '../../services/api'
 import key from '../../../key'
@@ -11,13 +10,11 @@ import Footer from '../../components/Footer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
-const Home = ({navigation}) => {
-    const carouselRef = useRef(null)
+const Home = ({ navigation }) => {
     const [slide, setSlide] = useState({})
-    const [listAll, setListAll] = useState([])
-    const [listDiscover, setListDiscover] = useState([])
-    const [listTvTranding, setListTvTranding] = useState([])
-    const [dataSlide, setDataSlide] = useState([])
+    const [listAll, setListAll] = useState({})
+    const [listDiscover, setListDiscover] = useState({})
+    const [listTvTranding, setListTvTranding] = useState({})
 
     useEffect(() => {
 
@@ -72,61 +69,56 @@ const Home = ({navigation}) => {
 
     }, [])
 
-    useEffect(() => {
-        let date = (slide.release_date ? slide.release_date : slide.first_air_date)
-        let newDate = []
-
-        if (date) {
-            newDate = date.split('-')
-        }
-
-        setDataSlide(newDate)
-    }, [])
-
     return (
-        <ScrollView style={{ flex: 1 }} >
+        <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <View style={styles.container}>
 
-                    <Slide slide={slide} />
+                    <Slide slide={slide} navigation={navigation} />
 
                     <View>
-                        {listAll &&
+                        {Object.keys(listAll).length > 0 &&
                             <>
                                 <Text style={styles.listTitle}>{listAll.title}</Text>
-                                <Carousel
-                                    ref={carouselRef}
-                                    data={listAll.items}
-                                    renderItem={(items, index) => <ListItemsCarousel list={items} navigation={navigation} />}
-                                    sliderWidth={screenWidth}
-                                    itemWidth={200}
-                                />
+                                <View style={styles.containerList}>
+                                    <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+                                        {listAll.items.map((list) => {
+                                            return (
+                                                <ListItemsCarousel key={list.id} list={list} navigation={navigation} />
+                                            )
+                                        })}
+                                    </ScrollView>
+                                </View>
                             </>
                         }
 
-                        {listDiscover &&
+                        {Object.keys(listDiscover).length > 0 &&
                             <>
                                 <Text style={styles.listTitle}>{listDiscover.title}</Text>
-                                <Carousel
-                                    ref={carouselRef}
-                                    data={listDiscover.items}
-                                    renderItem={(items, index) => <ListItemsCarousel list={items} navigation={navigation} />}
-                                    sliderWidth={screenWidth}
-                                    itemWidth={200}
-                                />
+                                <View style={styles.containerList}>
+                                    <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+                                        {listDiscover.items.map((list) => {
+                                            return (
+                                                <ListItemsCarousel key={list.id} list={list} navigation={navigation} media={listDiscover.media_type} />
+                                            )
+                                        })}
+                                    </ScrollView>
+                                </View>
                             </>
                         }
 
-                        {listTvTranding &&
+                        {Object.keys(listTvTranding).length > 0 &&
                             <>
                                 <Text style={styles.listTitle}>{listTvTranding.title}</Text>
-                                <Carousel
-                                    ref={carouselRef}
-                                    data={listTvTranding.items}
-                                    renderItem={(items, index) => <ListItemsCarousel list={items} navigation={navigation} />}
-                                    sliderWidth={screenWidth}
-                                    itemWidth={200}
-                                />
+                                <View style={styles.containerList}>
+                                    <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+                                        {listTvTranding.items.map((list) => {
+                                            return (
+                                                <ListItemsCarousel key={list.id} list={list} navigation={navigation} media={listTvTranding.media_type} />
+                                            )
+                                        })}
+                                    </ScrollView>
+                                </View>
                             </>
                         }
                     </View>
@@ -151,7 +143,6 @@ const styles = StyleSheet.create({
         width: screenWidth,
         height: 450,
     },
-
     backgroundTransparent: {
         position: 'absolute',
         width: screenWidth,
@@ -166,6 +157,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'center',
         bottom: 60
+    },
+    containerList: {
+        width: screenWidth,
+        marginTop: 15,
     },
     dataYear: {
         fontSize: 20,

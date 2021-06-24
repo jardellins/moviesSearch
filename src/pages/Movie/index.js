@@ -56,7 +56,7 @@ const Movie = ({navigation}) => {
             <ScrollView>
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
-                    <Slide slide={slide} />
+                    <Slide slide={slide} navigation={navigation}/>
 
                     <View>
                         <Text style={styles.textTitle}>Filmes</Text>

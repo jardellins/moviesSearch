@@ -4,9 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
-const Slide = ({slide}) => {
+const Slide = ({slide, navigation}) => {
     return (
-        <TouchableOpacity >
+        <TouchableOpacity onPress={() => navigation.navigate('Info', {id: slide.id, media: slide.media_type})}>
             <View>
                 <Image source={{ uri: `https://image.tmdb.org/t/p/original${slide.backdrop_path}` }} style={styles.imageBack} />
 

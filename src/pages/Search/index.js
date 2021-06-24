@@ -12,7 +12,6 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 const Background = ({ children }) => {
     return (
         <LinearGradient
-            // Background Linear Gradient
             colors={['#ff4400', '#141414']}
             style={styles.backgroundTransparent}
         >
@@ -35,7 +34,7 @@ const Search = ({ navigation }) => {
         listGender()
     }, [])
 
-    const handleSearch = ({name, id, genreName}) => {
+    const handleSearch = ({ name, id, genreName }) => {
         navigation.navigate('ListSearch', { name: name, id: id, genreName: genreName })
 
         setValueInput('')
@@ -58,7 +57,13 @@ const Search = ({ navigation }) => {
                                 onChangeText={(text) => setValueInput(text)}
                             />
                             <TouchableOpacity>
-                                <Ionicons name='search' size={20} style={styles.iconSearch} onPress={() => handleSearch({name: valueInput})} />
+                                <Ionicons name='search' size={20} style={styles.iconSearch} onPress={() => {
+                                    if (!valueInput) {
+                                        alert('Por favor digite um nome')
+                                    } else {
+                                        handleSearch({ name: valueInput })
+                                    }
+                                }} />
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -66,7 +71,7 @@ const Search = ({ navigation }) => {
                     <View style={styles.containerGenre}>
                         {genreList[0] && genreList.map((genre) => {
                             return (
-                                <TouchableOpacity key={genre.id} style={styles.listGenre} onPress={() => handleSearch({id: genre.id, genreName: genre.name})}>
+                                <TouchableOpacity key={genre.id} style={styles.listGenre} onPress={() => handleSearch({ id: genre.id, genreName: genre.name })}>
                                     <Text style={styles.textGenre}>
                                         {genre.name}
                                     </Text>

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import YoutubePlayer from "react-native-youtube-iframe"
+import NumberFormat from 'react-number-format';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 
 import api from '../../services/api'
@@ -12,7 +13,7 @@ import Footer from '../../components/Footer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
-const Info = ({ route }) => {
+const Info = ({ route, navigation }) => {
     const [getInfo, setGetInfo] = useState({})
     const [getTrailer, setGetTrailer] = useState([])
     const [urlTrailer, setURLTrailer] = useState('')
@@ -63,9 +64,12 @@ const Info = ({ route }) => {
             })
         }
 
-        handleMinute()
-        handleDate()
-        trailer()
+        if (Object.keys(getInfo).length > 0) {
+            handleMinute()
+            handleDate()
+            trailer()
+        }
+
     }, [getInfo])
 
     useEffect(() => {
@@ -73,15 +77,16 @@ const Info = ({ route }) => {
             setURLTrailer(getTrailer[0].key)
         }
     }, [getTrailer])
-
+    console.log(dateNew)
 
     return (
         <View style={styles.container}>
+            <MaterialIcons style={styles.arrow} name="arrow-back-ios" size={20} color="white" onPress={() => navigation.goBack()} />
+
             <ScrollView style={{ flex: 1 }}>
 
                 <View>
 
-                    {/* <MaterialIcons style={styles.arrow} name="arrow-back-ios" size={24} color="white" /> */}
 
                     {getInfo.backdrop_path ?
                         <Image source={{ uri: `https://image.tmdb.org/t/p/original${getInfo.backdrop_path}` }} style={styles.imageBack} />
@@ -94,7 +99,6 @@ const Info = ({ route }) => {
                     </View>
 
                     <LinearGradient
-                        // Background Linear Gradient
                         colors={['transparent', '#141414']}
                         style={styles.backgroundTransparent}
                     />
@@ -103,19 +107,26 @@ const Info = ({ route }) => {
                 <View style={styles.containerInfo}>
                     <Image source={{ uri: `https://image.tmdb.org/t/p/w300${getInfo.poster_path}` }} style={styles.imagePoster} />
 
-                    {getInfo.networks &&
-                        getInfo.networks.map((stream) => <Image key={stream.name} source={{ uri: `https://image.tmdb.org/t/p/w200/${stream.logo_path}` }} style={styles.logo} />)
-                    }
+                    <View style={styles.containerLogo}>
+                        {getInfo.networks &&
+                            getInfo.networks.map((stream) => <Image resizeMode={'center'} key={stream.name} source={{ uri: `https://image.tmdb.org/t/p/w200/${stream.logo_path}` }} style={styles.logo} />)
+                        }
+                    </View>
 
                     <View style={styles.overview} >
                         <Text style={styles.tagline}>{getInfo.tagline}</Text>
-                        <Text>Sinopse</Text>
+                        <Text style={styles.synopsis}>Sinopse</Text>
                         <Text>{getInfo.overview}</Text>
                     </View>
 
                     <View style={styles.containerDetails}>
 
                         <View style={styles.details}>
+                            
+                            {dateNew !== '' &&
+                                <Text>Estreia: {dateNew}</Text>
+                             }
+
                             {getInfo.origin_country &&
                                 <Text>
                                     {getInfo.origin_country.length > 1 ? 'Paises de origem: ' : 'País de origem: '}
@@ -134,17 +145,25 @@ const Info = ({ route }) => {
                                 </Text>
                             }
 
-                            {/* {getInfo.budget > 0 &&
-                            <Text>Orçamento: 
-                            <NumberFormat value={getInfo.budget} displayType={'text'} thousandSeparator={true} prefix={' $'} />
-                            </Text>
-                        }
-                        
-                        {getInfo.revenue > 0 &&
-                            <Text>Arrecadação: 
-                            <NumberFormat value={getInfo.revenue} displayType={'text'} thousandSeparator={true} prefix={' $'} />
-                            </Text>
-                        } */}
+                            {getInfo.budget > 0 &&
+                                <NumberFormat
+                                    value={getInfo.budget}
+                                    displayType={'text'}
+                                    thousandSeparator={true}
+                                    prefix={'$'}
+                                    renderText={value => <Text>Orçamento: {value}</Text>}
+                                />
+                            }
+
+                            {getInfo.revenue > 0 &&
+                                <NumberFormat
+                                    value={getInfo.revenue}
+                                    displayType={'text'}
+                                    thousandSeparator={true}
+                                    prefix={'$'}
+                                    renderText={value => <Text>Arrecadação: {value}</Text>}
+                                />
+                            }
 
                             {getInfo.number_of_seasons &&
                                 (getInfo.number_of_seasons === 1 ?
@@ -160,8 +179,8 @@ const Info = ({ route }) => {
 
 
                             <Text>Duração: {minutes} min</Text>
-                        </View>
 
+                        </View>
                         <View>
                             {urlTrailer !== '' &&
                                 <TouchableOpacity onPress={() => setShowModal(true)}>
@@ -200,6 +219,16 @@ const Info = ({ route }) => {
 export default Info;
 
 const styles = StyleSheet.create({
+    arrow: {
+        padding: 10,
+        backgroundColor: '#ff8732',
+        width: '15%',
+        borderRadius: 30,
+        position: 'absolute',
+        zIndex: 5,
+        marginTop: 40,
+        marginLeft: 10,
+    },
     container: {
         flex: 1,
         backgroundColor: '#141414',
@@ -209,9 +238,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     title: {
-        fontSize: 23,
+        fontSize: 28,
         fontWeight: 'bold',
-        color: 'white'
+        color: 'white',
+        textAlign: 'center',
+        margin: 5,
     },
     imageBack: {
         alignSelf: 'center',
@@ -227,8 +258,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         margin: 30,
         flex: 1,
-        height: 'auto',
-        maxHeight: screenHeight,
         borderRadius: 8
     },
     imagePoster: {
@@ -237,17 +266,37 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         margin: 8,
     },
+    containerLogo: {
+        width: screenWidth,
+        height: 18,
+        alignSelf: 'center',
+        marginBottom: 20,
+    },
+    logo: {
+        margin: 3,
+        width: '50%',
+        height: '100%',
+        alignSelf: 'center'
+    },
     overview: {
         fontSize: 16,
         color: '#333',
         margin: 12,
-        alignItems: 'center'
+        alignItems: 'center',
+        textAlign: 'justify',
     },
     tagline: {
         fontSize: 19,
         fontWeight: 'bold',
         color: '#0c1a60',
         marginBottom: 10,
+        textAlign: 'center',
+    },
+    synopsis: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        alignSelf: 'flex-start',
+        marginBottom: 8,
     },
     containerDetails: {
         margin: 20,
@@ -277,7 +326,8 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: 'rgba(0,0,0,.8)',
         alignSelf: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        zIndex: 8,
     },
     closeButton: {
         alignSelf: 'center',

@@ -123,8 +123,8 @@ const Home = ({ navigation }) => {
                         }
                     </View>
 
-                    <Footer />
 
+                    <Footer />
                 </View>
             </KeyboardAvoidingView>
         </ScrollView>

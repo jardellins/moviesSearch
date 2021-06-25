@@ -11,7 +11,6 @@ const Slide = ({slide, navigation}) => {
                 <Image source={{ uri: `https://image.tmdb.org/t/p/original${slide.backdrop_path}` }} style={styles.imageBack} />
 
                 <LinearGradient
-                    // Background Linear Gradient
                     colors={['transparent', '#141414']}
                     style={styles.backgroundTransparent}
                 />

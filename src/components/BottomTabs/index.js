@@ -13,6 +13,7 @@ const BottomTabs = () => {
     return (
         <Tab.Navigator tabBarOptions={{
             style: {
+                borderTopColor: 'transparent',
                 backgroundColor: '#ff8732',
                 height: 55,
             },

@@ -77,7 +77,6 @@ const Info = ({ route, navigation }) => {
             setURLTrailer(getTrailer[0].key)
         }
     }, [getTrailer])
-    console.log(dateNew)
 
     return (
         <View style={styles.container}>

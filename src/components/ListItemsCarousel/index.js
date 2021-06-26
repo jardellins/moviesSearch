@@ -7,14 +7,15 @@ const ListComponents = ({ list, navigation, media }) => {
 
   return (
     <>
-      {list &&
         <TouchableOpacity onPress={() => navigation.navigate('Info', { id: list.id, media: mediaList, navigation })}>
           <View style={styles.container}>
-            <Image source={{ uri: `https://image.tmdb.org/t/p/w300${list.poster_path}` }} style={styles.imageList} />
-            <Text style={styles.title}>{list.title ? list.title : list.name}</Text>
+
+              <Image source={{ uri: `https://image.tmdb.org/t/p/w300${list.poster_path}` }} style={styles.imageList} />
+              <Text style={styles.title}>{list.title ? list.title : list.name}</Text>
+
           </View>
         </TouchableOpacity>
-      }
+    
     </>
   )
 }
@@ -40,5 +41,5 @@ const styles = StyleSheet.create({
     borderColor: '#ff8732',
     borderWidth: 2,
 
-  }
+  },
 })

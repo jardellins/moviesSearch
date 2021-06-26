@@ -7,6 +7,8 @@ import key from '../../../key'
 import ListItemsCarousel from '../../components/ListItemsCarousel'
 import Slide from '../../components/Slide'
 import Footer from '../../components/Footer';
+import SkeletonListItems from '../../components/SkeletonListItems'
+import SkeletonSlide from '../../components/SkeletonSlide'
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
 
@@ -74,10 +76,14 @@ const Home = ({ navigation }) => {
             <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
                 <View style={styles.container}>
 
-                    <Slide slide={slide} navigation={navigation} />
+                    {Object.keys(slide).length > 0 ?
+                        <Slide slide={slide} navigation={navigation} />
+                    :
+                        <SkeletonSlide />
+                    }
 
                     <View>
-                        {Object.keys(listAll).length > 0 &&
+                        {Object.keys(listAll).length > 0 ?
                             <>
                                 <Text style={styles.listTitle}>{listAll.title}</Text>
                                 <View style={styles.containerList}>
@@ -90,9 +96,11 @@ const Home = ({ navigation }) => {
                                     </ScrollView>
                                 </View>
                             </>
+                            :
+                            <SkeletonListItems />
                         }
 
-                        {Object.keys(listDiscover).length > 0 &&
+                        {Object.keys(listDiscover).length > 0 ?
                             <>
                                 <Text style={styles.listTitle}>{listDiscover.title}</Text>
                                 <View style={styles.containerList}>
@@ -105,9 +113,11 @@ const Home = ({ navigation }) => {
                                     </ScrollView>
                                 </View>
                             </>
+                            :
+                            <SkeletonListItems />
                         }
 
-                        {Object.keys(listTvTranding).length > 0 &&
+                        {Object.keys(listTvTranding).length > 0 ?
                             <>
                                 <Text style={styles.listTitle}>{listTvTranding.title}</Text>
                                 <View style={styles.containerList}>
@@ -120,6 +130,8 @@ const Home = ({ navigation }) => {
                                     </ScrollView>
                                 </View>
                             </>
+                            :
+                            <SkeletonListItems />
                         }
                     </View>
 

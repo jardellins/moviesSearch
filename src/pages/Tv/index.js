@@ -7,9 +7,11 @@ import key from '../../../key'
 import Slide from '../../components/Slide';
 import ListOfProductions from '../../components/ListOfProductions';
 import Footer from '../../components/Footer';
+import SkeletonListProduction from '../../components/SkeletonListProduction';
+import SkeletonSlide from '../../components/SkeletonSlide';
 
-const Movie = ({navigation}) => {
-    const [slide, setSlide] = useState([])
+const Movie = ({ navigation }) => {
+    const [slide, setSlide] = useState({})
     const [listOfMovies, setListOfMovies] = useState([])
     const [newList, setNewList] = useState([])
 
@@ -56,14 +58,20 @@ const Movie = ({navigation}) => {
             <ScrollView style={{ flex: 1 }} >
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
-                    <Slide slide={slide} navigation={navigation}/>
+                    {Object.keys(slide).length > 0 ?
+                        <Slide slide={slide} navigation={navigation} />
+                        :
+                        <SkeletonSlide />
+                    }
 
                     <View>
                         <Text style={styles.textTitle}>Séries</Text>
                     </View>
 
-                    {newList &&
+                    {newList.length > 0 ?
                         <ListOfProductions listSlide={newList} navigation={navigation} />
+                        :
+                        <SkeletonListProduction />
                     }
 
                     <Footer />

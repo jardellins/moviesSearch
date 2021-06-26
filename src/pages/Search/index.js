@@ -2,12 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ScrollView, KeyboardAvoidingView, Dimensions, TouchableOpacity } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons'
+import { createShimmerPlaceholder } from 'react-native-shimmer-placeholder';
+
 
 import api from '../../services/api'
 import key from '../../../key'
 import Footer from '../../components/Footer';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window')
+const ShimmerPlaceHolder = createShimmerPlaceholder(LinearGradient)
 
 const Background = ({ children }) => {
     return (
@@ -69,15 +72,29 @@ const Search = ({ navigation }) => {
                     </View>
 
                     <View style={styles.containerGenre}>
-                        {genreList[0] && genreList.map((genre) => {
-                            return (
-                                <TouchableOpacity key={genre.id} style={styles.listGenre} onPress={() => handleSearch({ id: genre.id, genreName: genre.name })}>
-                                    <Text style={styles.textGenre}>
-                                        {genre.name}
-                                    </Text>
-                                </TouchableOpacity>
-                            )
-                        })}
+                        {genreList[0] ?
+                            genreList.map((genre) => {
+                                return (
+                                    <TouchableOpacity key={genre.id} style={styles.listGenre} onPress={() => handleSearch({ id: genre.id, genreName: genre.name })}>
+                                        <Text style={styles.textGenre}>
+                                            {genre.name}
+                                        </Text>
+                                    </TouchableOpacity>
+                                )
+                            })
+                            :
+                            <View style={{flexDirection: 'row'}}>
+                                <ShimmerPlaceHolder
+                                    visible={false}
+                                    style={styles.listGenreSkeleton}
+                                />
+
+                                <ShimmerPlaceHolder
+                                    visible={false}
+                                    style={styles.listGenreSkeleton}
+                                />
+                            </View>
+                        }
                     </View>
 
                     <Footer />
@@ -139,5 +156,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#222',
         textAlign: 'center',
+    },
+    listGenreSkeleton: {
+        width: '47%',
+        height: 80,
+        margin: 5,
+        marginBottom: screenHeight - 200,
+        borderRadius: 8,
     }
 })

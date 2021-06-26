@@ -13,7 +13,7 @@ const SkeletonListProduction = () => {
 
       {list.map(array => {
         return (
-          <View>
+          <View key={array}>
             <ShimmerPlaceHolder
               visible={false}
               style={styles.titleSkeleton}

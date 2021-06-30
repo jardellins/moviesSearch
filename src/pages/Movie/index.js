@@ -14,8 +14,7 @@ const Movie = ({ navigation }) => {
     const [slide, setSlide] = useState({})
     const [listOfMovies, setListOfMovies] = useState([])
     const [newList, setNewList] = useState([])
-    const [currentPage, setCurrentPage] = useState(1)
-
+    
     useEffect(() => {
 
         const response = async () => {
@@ -54,45 +53,9 @@ const Movie = ({ navigation }) => {
 
     }, [listOfMovies])
 
-    const handleScroll = (list) => {
-        if (!list) {
-            return
-        }
-
-        setCurrentPage(currentPage + 1)
-
-        const getMore = async () => {
-            await api.get(`/discover/movie${key}&page=${currentPage}`).then(responde => {
-                const newData = responde.data.results
-                const newObject = {
-                    ...listOfMovies,
-                    ...newData
-                }
-                // setListOfMovies(
-                    // ...listOfMovies,
-                //     newObject
-                // )
-                console.log(newObject)
-            })
-        }
-
-        getMore()
-
-    }
-
-    const isCloseToBottom = ({layoutMeasurement, contentOffset, contentSize}) => {
-        return (layoutMeasurement.height + contentOffset.y) >= contentSize.height
-      }
-
     return (
         <View style={styles.container}>
-            <ScrollView
-                onScroll={({nativeEvent}) => {
-                    if (isCloseToBottom(nativeEvent)) {
-                        handleScroll(listOfMovies)
-                      }
-                }}
-            >
+            <ScrollView>
                 <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
 
                     {Object.keys(slide).length > 0 ?

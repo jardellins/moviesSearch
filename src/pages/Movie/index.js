@@ -1,99 +1,105 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, KeyboardAvoidingView, Dimensions } from 'react-native'
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView,
+  Dimensions,
+} from "react-native";
 
-import api from '../../services/api'
-import key from '../../../key'
+import api from "../../services/api";
+import key from "../../../key";
 
-import Slide from '../../components/Slide';
-import ListOfProductions from '../../components/ListOfProductions';
-import Footer from '../../components/Footer';
-import SkeletonListProduction from '../../components/SkeletonListProduction';
-import SkeletonSlide from '../../components/SkeletonSlide';
+import Slide from "../../components/Slide";
+import ListOfProductions from "../../components/ListOfProductions";
+import Footer from "../../components/Footer";
+import SkeletonListProduction from "../../components/SkeletonListProduction";
+import SkeletonSlide from "../../components/SkeletonSlide";
 
 const Movie = ({ navigation }) => {
-    const [slide, setSlide] = useState({})
-    const [listOfMovies, setListOfMovies] = useState([])
-    const [newList, setNewList] = useState([])
-    
-    useEffect(() => {
+  const [slide, setSlide] = useState({});
+  const [listOfMovies, setListOfMovies] = useState([]);
+  const [newList, setNewList] = useState([]);
 
-        const response = async () => {
-            const list = await api.get(`/discover/movie${key}`)
-            const redonNumber = Math.floor(Math.random() * (list.data.results.length - 1))
-            const choose = list.data.results[redonNumber]
+  useEffect(() => {
+    const response = async () => {
+      const list = await api.get(`/discover/movie${key}`);
+      const redonNumber = Math.floor(
+        Math.random() * (list.data.results.length - 1)
+      );
+      const choose = list.data.results[redonNumber];
 
-            setSlide({ ...choose, media_type: 'movie' })
-        }
+      setSlide({ ...choose, media_type: "movie" });
+    };
 
-        response()
+    response();
+  }, []);
 
-    }, [])
+  useEffect(() => {
+    const getMovies = async () => {
+      await api.get(`/discover/movie${key}`).then((responde) => {
+        setListOfMovies(responde.data.results);
+      });
+    };
 
-    useEffect(() => {
-        const getMovies = async () => {
-            await api.get(`/discover/movie${key}`).then(responde => {
-                setListOfMovies(responde.data.results)
-            })
-        }
+    getMovies();
+  }, []);
 
-        getMovies()
-    }, [])
+  useEffect(() => {
+    const addMedia = () => {
+      const newData = listOfMovies.map((list) => ({
+        ...list,
+        media_type: "movie",
+      }));
 
-    useEffect(() => {
-        const addMedia = () => {
-            const newData = listOfMovies.map(list => ({
-                ...list,
-                media_type: 'movie'
-            }))
+      setNewList(newData);
+    };
 
-            setNewList(newData)
-        }
+    addMedia();
+  }, [listOfMovies]);
 
-        addMedia()
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
+        >
+          {Object.keys(slide).length > 0 ? (
+            <Slide slide={slide} navigation={navigation} />
+          ) : (
+            <SkeletonSlide />
+          )}
 
-    }, [listOfMovies])
+          <View>
+            <Text style={styles.textTitle}>Filmes</Text>
+          </View>
 
-    return (
-        <View style={styles.container}>
-            <ScrollView>
-                <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+          {newList.length > 0 ? (
+            <ListOfProductions listSlide={newList} navigation={navigation} />
+          ) : (
+            <SkeletonListProduction />
+          )}
 
-                    {Object.keys(slide).length > 0 ?
-                        <Slide slide={slide} navigation={navigation} />
-                        :
-                        <SkeletonSlide />
-                    }
-
-                    <View>
-                        <Text style={styles.textTitle}>Filmes</Text>
-                    </View>
-
-                    {newList.length > 0 ?
-                        <ListOfProductions listSlide={newList} navigation={navigation} />
-                        :
-                        <SkeletonListProduction />
-                    }
-
-                    <Footer />
-
-                </KeyboardAvoidingView>
-            </ScrollView>
-        </View>
-    )
-}
+          <Footer />
+        </KeyboardAvoidingView>
+      </ScrollView>
+    </View>
+  );
+};
 
 export default Movie;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#141414'
-    },
-    textTitle: {
-        fontSize: 30,
-        fontWeight: 'bold',
-        color: '#999',
-        alignSelf: 'center',
-        marginBottom: 20,
-    }
-})
+  container: {
+    flex: 1,
+    backgroundColor: "#141414",
+  },
+  textTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    color: "#999",
+    alignSelf: "center",
+    marginBottom: 20,
+  },
+});

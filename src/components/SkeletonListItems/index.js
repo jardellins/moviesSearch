@@ -13,6 +13,7 @@ const SkeletonListItems = () => {
             <View style={{ margin: 10 }}>
                 <ShimmerPlaceHolder
                     style={styles.textSkeleton}
+                    shimmerColors={["#333", "#141414", '#666']}
                 />
             </View>
             <View style={styles.container}>
@@ -23,11 +24,13 @@ const SkeletonListItems = () => {
 
                             <ShimmerPlaceHolder
                                 visible={false}
+                                shimmerColors={["#333", "#141414", '#666']}
                                 style={styles.imageSkeleton}
                             />
 
                             <ShimmerPlaceHolder
                                 visible={false}
+                                shimmerColors={["#333", "#141414", '#666']}
                                 style={styles.titleSkeleton}
                             />
                         </View>

@@ -11,6 +11,7 @@ const SkeletonSlide = () => {
         <>
             <ShimmerPlaceHolder
                 visible={false}
+                shimmerColors={["#333", "#141414", '#666']}
                 style={styles.imageSkeleton}
             />
 
@@ -21,6 +22,7 @@ const SkeletonSlide = () => {
 
             <ShimmerPlaceHolder
                 visible={false}
+                shimmerColors={["#333", "#141414", '#666']}
                 style={styles.titleSkeleton}
             />
         </>

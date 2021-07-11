@@ -16,14 +16,17 @@ const SkeletonListProduction = () => {
           <View key={array}>
             <ShimmerPlaceHolder
               visible={false}
+              shimmerColors={["#333", "#141414", '#666']}
               style={styles.titleSkeleton}
             />
             <ShimmerPlaceHolder
               visible={false}
+              shimmerColors={["#333", "#141414", '#666']}
               style={styles.yearSkeleton}
             />
             <ShimmerPlaceHolder
               visible={false}
+              shimmerColors={["#333", "#141414", '#666']}
               style={styles.imageSkeleton}
             />
           </View>
